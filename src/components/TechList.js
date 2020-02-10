@@ -6,6 +6,21 @@ class Techlist extends Component {
     newTech: "",
     techs: ["NodeJS", "ReactJS", "React Native"]
   };
+  // executado assim que o componete é carregado
+  componentDidMount() {
+    const techs = localStorage.getItem("techs");
+    if (techs) {
+      this.setState({ techs: JSON.parse(techs) });
+    }
+  }
+  //executado sempre que houver alterações nos props ou estado
+  componentDidUpdate(_, prevState) {
+    if (prevState.techs !== this.state.techs) {
+      localStorage.setItem("techs", JSON.stringify(this.state.techs));
+    }
+  }
+  // executado quando o componente deixa de existir
+  componentWillMount() {}
   handleInputChange = e => {
     this.setState({ newTech: e.target.value });
   };
@@ -35,7 +50,6 @@ class Techlist extends Component {
               onDelete={() => this.handleDelete(tech)}
             />
           ))}
-          <TechItem />
         </ul>
         <input
           type="text"
